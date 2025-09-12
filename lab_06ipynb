@@ -1,0 +1,164 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNA1XSWaBpS1JXO2/x8aAOS",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/AthariDeepa/B19_1274/blob/main/lab_06ipynb\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import pandas as pd\n",
+        "# Step 1: Create a sample dataset\n",
+        "data = {\n",
+        "    'PatientID': [101, 102, 103, 104, 105, 106, 107, 108],\n",
+        "    'Age': [25, 34, -5, 150, 45, 77, 29, 130]  # Note: -5, 150, 130 are invalid\n",
+        "}\n",
+        "df = pd.DataFrame(data)\n",
+        "print(\"Original Dataset:\\n\")\n",
+        "print(df)\n",
+        "# Step 2: Define outlier condition\n",
+        "def is_valid_age(age):\n",
+        "    return 0 <= age <= 120\n",
+        "# Step 3: Detect outliers\n",
+        "invalid_ages = df[~df['Age'].apply(is_valid_age)]\n",
+        "print(\"\\nDetected Outliers (Invalid Ages):\\n\")\n",
+        "print(invalid_ages)\n",
+        "# Step 4: Remove outliers\n",
+        "cleaned_df = df[df['Age'].apply(is_valid_age)]\n",
+        "print(\"\\nCleaned Dataset (Outliers Removed):\\n\")\n",
+        "print(cleaned_df)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "bZ4JNKn-YFa6",
+        "outputId": "66504d49-da7c-4c66-c77c-035c55781a43"
+      },
+      "execution_count": 6,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Original Dataset:\n",
+            "\n",
+            "   PatientID  Age\n",
+            "0        101   25\n",
+            "1        102   34\n",
+            "2        103   -5\n",
+            "3        104  150\n",
+            "4        105   45\n",
+            "5        106   77\n",
+            "6        107   29\n",
+            "7        108  130\n",
+            "\n",
+            "Detected Outliers (Invalid Ages):\n",
+            "\n",
+            "   PatientID  Age\n",
+            "2        103   -5\n",
+            "3        104  150\n",
+            "7        108  130\n",
+            "\n",
+            "Cleaned Dataset (Outliers Removed):\n",
+            "\n",
+            "   PatientID  Age\n",
+            "0        101   25\n",
+            "1        102   34\n",
+            "4        105   45\n",
+            "5        106   77\n",
+            "6        107   29\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import pandas as pd\n",
+        "from sklearn.preprocessing import MinMaxScaler, StandardScaler\n",
+        "# Step 1: Create a sample dataset\n",
+        "data = {\n",
+        "    'CustomerID': [1001, 1002, 1003, 1004, 1005],\n",
+        "    'Income': [25000, 48000, 32000, 76000, 54000]  # income in USD\n",
+        "}\n",
+        "df = pd.DataFrame(data)\n",
+        "print(\"Original Dataset:\\n\")\n",
+        "print(df)\n",
+        "# Step 2: Apply Min-Max Normalization\n",
+        "min_max_scaler = MinMaxScaler()\n",
+        "df['Income_MinMax'] = min_max_scaler.fit_transform(df[['Income']])\n",
+        "# Step 3: Apply Z-score Standardization\n",
+        "z_score_scaler = StandardScaler()\n",
+        "df['Income_Zscore'] = z_score_scaler.fit_transform(df[['Income']])\n",
+        "# Step 4: Output Result\n",
+        "print(\"\\nDataset with Scaled Income:\\n\")\n",
+        "print(df)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "bWkBG-qpYVLZ",
+        "outputId": "d0395077-0306-4d59-effd-a606f32bae53"
+      },
+      "execution_count": 7,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Original Dataset:\n",
+            "\n",
+            "   CustomerID  Income\n",
+            "0        1001   25000\n",
+            "1        1002   48000\n",
+            "2        1003   32000\n",
+            "3        1004   76000\n",
+            "4        1005   54000\n",
+            "\n",
+            "Dataset with Scaled Income:\n",
+            "\n",
+            "   CustomerID  Income  Income_MinMax  Income_Zscore\n",
+            "0        1001   25000       0.000000      -1.229837\n",
+            "1        1002   48000       0.450980       0.055902\n",
+            "2        1003   32000       0.137255      -0.838525\n",
+            "3        1004   76000       1.000000       1.621149\n",
+            "4        1005   54000       0.568627       0.391312\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "metadata": {
+        "id": "X9rVpPqlZDEi"
+      },
+      "execution_count": null,
+      "outputs": []
+    }
+  ]
+}
